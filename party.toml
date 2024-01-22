@@ -1,0 +1,15 @@
+[[tasks]]
+command = ["cargo", "fmt"]
+parallel = false
+
+[[tasks]]
+command = ["cargo", "clippy", "--", "-Dwarnings"]
+parallel = true
+
+[[tasks]]
+command = ["cargo", "test"]
+parallel = true
+
+[[tasks]]
+command = ["cargo", "doc", "--open"]
+parallel = true
