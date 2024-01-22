@@ -9,7 +9,3 @@ parallel = true
 [[tasks]]
 command = ["cargo", "test"]
 parallel = true
-
-[[tasks]]
-command = ["cargo", "doc", "--open"]
-parallel = true

@@ -30,17 +30,19 @@ pub async fn run_commands(batches: Vec<CommandBatch>, no_commands: usize) -> any
 fn handle_single_command(counter_str: ColoredString, raw_cmd: &PartyCommand) -> anyhow::Result<()> {
     println!("⏳ {} {}", counter_str, raw_cmd);
 
-    let mut command: std::process::Child = Command::new(raw_cmd.command.clone())
+    let command: std::process::Child = Command::new(raw_cmd.command.clone())
         .args(raw_cmd.args.clone())
+        // .stdout(Stdio::piped())
+        // .stderr(Stdio::piped())
         .spawn()
         .context(format!("Failed to start command: \"{}\"", raw_cmd))?;
 
-    let rc = command
-        .wait()
+    let output = command
+        .wait_with_output()
         .context(format!("Command failed: \"{}\"", raw_cmd))?;
 
-    if !rc.success() {
-        match rc.code() {
+    if !output.status.success() {
+        match output.status.code() {
             Some(code) => {
                 let err_msg = make_eror_message(format!(" returned with code {}!", code));
                 bail!("❌ {} {} {}", counter_str, raw_cmd, err_msg);
