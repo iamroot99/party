@@ -34,9 +34,15 @@ async fn main() -> anyhow::Result<()> {
 
     let batches = schdeuler::schedule_commands(commands);
 
-    println!("Staring cargo party!");
-    runner::run_commands(batches, no_commands).await?;
-    println!("Cargo party complete");
+    println!("Staring cargo party 🏇🏇🏇");
+
+    if batches.len() == no_commands {
+        runner::run_sync_commands(batches, no_commands)?;
+    } else {
+        runner::run_async_commands(batches, no_commands).await?;
+    }
+
+    println!("✅ Cargo party complete! ✅");
 
     Ok(())
 }

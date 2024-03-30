@@ -1,4 +1,4 @@
-pub(super) struct RunReport {
+pub struct RunReport {
     pub message: String,
     pub success: bool,
 }

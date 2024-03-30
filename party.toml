@@ -3,6 +3,10 @@ command = ["cargo", "fmt"]
 parallel = false
 
 [[tasks]]
+command = ["sleep", "5"]
+parallel = true
+
+[[tasks]]
 command = ["cargo", "clippy", "--", "-Dwarnings"]
 parallel = true
 
