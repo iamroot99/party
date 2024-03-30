@@ -8,7 +8,7 @@ pub struct Task {
     pub command: Vec<String>,
 
     /// Signals if command can be paralelised
-    pub parallel: bool,
+    pub parallel: Option<bool>,
 }
 
 /// Top-level struct holding all TOML tasks
@@ -27,12 +27,15 @@ mod tests {
         // GIVEN
         let toml = "
         [[tasks]]
+        command = [\"cargo\", \"fmt\"]
+        parallel = false
+
+        [[tasks]]
         command = [\"cargo\", \"clippy\", \"--\", \"-Dwarnings\"]
         parallel = true
 
         [[tasks]]
         command = [\"cargo\", \"test\"]
-        parallel = false
         ";
 
         // WHEN
@@ -42,12 +45,15 @@ mod tests {
         assert!(tasks.is_ok());
         let tasks = tasks.unwrap();
 
-        assert_eq!(tasks.tasks.len(), 2);
+        assert_eq!(tasks.tasks.len(), 3);
 
-        assert_eq!(tasks.tasks[0].command.len(), 4);
-        assert!(tasks.tasks[0].parallel);
+        assert_eq!(tasks.tasks[0].command.len(), 2);
+        assert!(tasks.tasks[0].parallel.is_some_and(|x| !x));
 
-        assert_eq!(tasks.tasks[1].command.len(), 2);
-        assert!(!tasks.tasks[1].parallel);
+        assert_eq!(tasks.tasks[1].command.len(), 4);
+        assert!(tasks.tasks[1].parallel.is_some_and(|x| x));
+
+        assert_eq!(tasks.tasks[2].command.len(), 2);
+        assert!(tasks.tasks[2].parallel.is_none());
     }
 }

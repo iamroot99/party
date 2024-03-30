@@ -4,8 +4,32 @@ use anyhow::{bail, Context, Ok};
 use colored::{ColoredString, Colorize};
 use std::process::Command;
 
+struct RunReport {
+    pub message: String,
+    pub success: bool,
+}
+
+impl RunReport {
+    pub fn new_success(message: String) -> Self {
+        Self {
+            message,
+            success: true,
+        }
+    }
+
+    pub fn new_failed(message: String) -> Self {
+        Self {
+            message,
+            success: false,
+        }
+    }
+}
+
 /// Main driver function running all the party commands in batches.
 pub async fn run_commands(batches: Vec<CommandBatch>, no_commands: usize) -> anyhow::Result<()> {
+    let mut reports: Vec<RunReport> = vec![];
+    let mut failed = 0;
+
     let mut curr: usize = 0;
 
     for batch in batches {
@@ -20,39 +44,66 @@ pub async fn run_commands(batches: Vec<CommandBatch>, no_commands: usize) -> any
         }
 
         for handle in handles {
-            handle.await.context("Failed to join concurrent task")??;
+            let report = handle.await.context("Failed to join concurrent task")??;
+            if !report.success {
+                failed += 1;
+            }
+
+            reports.push(report);
         }
     }
+
+    if failed != 0 {
+        println!(
+            "\ncargo party report - {}/{} failed tasks:",
+            failed, no_commands
+        );
+    } else {
+        println!("\ncargo party report - all tasks passed:");
+    }
+    for report in reports {
+        if report.success {
+            println!("{}", report.message);
+        } else {
+            eprintln!("{}", report.message);
+        }
+    }
+    println!();
 
     Ok(())
 }
 
-fn handle_single_command(counter_str: ColoredString, raw_cmd: &PartyCommand) -> anyhow::Result<()> {
+fn handle_single_command(
+    counter_str: ColoredString,
+    raw_cmd: &PartyCommand,
+) -> anyhow::Result<RunReport> {
     println!("⏳ {} {}", counter_str, raw_cmd);
 
-    let command: std::process::Child = Command::new(raw_cmd.command.clone())
+    let mut command: std::process::Child = Command::new(raw_cmd.command.clone())
         .args(raw_cmd.args.clone())
-        // .stdout(Stdio::piped())
-        // .stderr(Stdio::piped())
         .spawn()
         .context(format!("Failed to start command: \"{}\"", raw_cmd))?;
 
     let output = command
-        .wait_with_output()
+        .wait()
         .context(format!("Command failed: \"{}\"", raw_cmd))?;
 
-    if !output.status.success() {
-        match output.status.code() {
+    if !output.success() {
+        match output.code() {
             Some(code) => {
                 let err_msg = make_eror_message(format!(" returned with code {}!", code));
-                bail!("❌ {} {} {}", counter_str, raw_cmd, err_msg);
+                let full_err_msg = format!("❌ {} {} {}", counter_str, raw_cmd, err_msg);
+                eprintln!("{}", full_err_msg);
+
+                return Ok(RunReport::new_failed(full_err_msg));
             }
-            None => bail!("Command \"{}\" failed with no return code", raw_cmd),
+            None => bail!("Command \"{}\" terminated with a signal", raw_cmd),
         }
     }
 
-    println!("✅ {} {}\n", counter_str, raw_cmd);
-    Ok(())
+    let message = format!("✅ {} {}", counter_str, raw_cmd);
+    println!("{}", message);
+    Ok(RunReport::new_success(message))
 }
 
 fn make_counter(step: usize, out_of: usize) -> ColoredString {

@@ -34,10 +34,13 @@ impl From<Task> for PartyCommand {
         let command = task.command.remove(0);
         let args = task.command;
 
+        // A task is not parallel by default
+        let is_parallel = task.parallel.unwrap_or(false);
+
         Self {
             command,
             args,
-            is_parallel: task.parallel,
+            is_parallel,
         }
     }
 }

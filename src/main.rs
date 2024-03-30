@@ -10,15 +10,14 @@ use cargo_party::{
 async fn main() -> anyhow::Result<()> {
     let file_path = "./party.toml";
 
-    let commands = match Path::new(file_path).exists() {
-        true => {
-            let parser = CommandParser {
-                path: file_path.to_string(),
-            };
-            let tasks = parser.parse()?;
-            party_command::convert_toml_tasks(tasks.tasks)
-        }
-        false => make_default_commands(),
+    let commands = if Path::new(file_path).exists() {
+        let parser = CommandParser {
+            path: file_path.to_string(),
+        };
+        let tasks = parser.parse()?;
+        party_command::convert_toml_tasks(tasks.tasks)
+    } else {
+        make_default_commands()
     };
     let no_commands = commands.len();
 
