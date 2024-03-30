@@ -1,29 +1,18 @@
 //! Main command runner
-use crate::{party_command::PartyCommand, schdeuler::CommandBatch};
+use crate::{
+    party_command::PartyCommand,
+    runner::{
+        output_util::{make_counter_blue, make_eror_message_red},
+        run_report::RunReport,
+    },
+    schdeuler::CommandBatch,
+};
 use anyhow::{bail, Context, Ok};
-use colored::{ColoredString, Colorize};
+use colored::ColoredString;
 use std::process::Command;
 
-struct RunReport {
-    pub message: String,
-    pub success: bool,
-}
-
-impl RunReport {
-    pub fn new_success(message: String) -> Self {
-        Self {
-            message,
-            success: true,
-        }
-    }
-
-    pub fn new_failed(message: String) -> Self {
-        Self {
-            message,
-            success: false,
-        }
-    }
-}
+mod output_util;
+mod run_report;
 
 /// Main driver function running all the party commands in batches.
 pub async fn run_commands(batches: Vec<CommandBatch>, no_commands: usize) -> anyhow::Result<()> {
@@ -39,7 +28,7 @@ pub async fn run_commands(batches: Vec<CommandBatch>, no_commands: usize) -> any
             curr += 1;
 
             handles.push(tokio::spawn(async move {
-                handle_single_command(make_counter(curr, no_commands), &command)
+                handle_single_command(make_counter_blue(curr, no_commands), &command)
             }));
         }
 
@@ -91,7 +80,7 @@ fn handle_single_command(
     if !output.success() {
         match output.code() {
             Some(code) => {
-                let err_msg = make_eror_message(format!(" returned with code {}!", code));
+                let err_msg = make_eror_message_red(format!(" returned with code {}!", code));
                 let full_err_msg = format!("❌ {} {} {}", counter_str, raw_cmd, err_msg);
                 eprintln!("{}", full_err_msg);
 
@@ -104,13 +93,4 @@ fn handle_single_command(
     let message = format!("✅ {} {}", counter_str, raw_cmd);
     println!("{}", message);
     Ok(RunReport::new_success(message))
-}
-
-fn make_counter(step: usize, out_of: usize) -> ColoredString {
-    let counter = format!("[{}/{}]", step, out_of);
-    counter.blue()
-}
-
-fn make_eror_message(message: String) -> ColoredString {
-    message.bright_red()
 }
