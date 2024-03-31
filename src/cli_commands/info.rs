@@ -5,24 +5,46 @@ use crate::{
     cli::InfoArgs,
     parser::command_parser::CommandParser,
     party_command::{self, make_default_commands},
-    util::{make_counter_blue, make_message_bright_green},
+    util::{check_file_path, make_counter_blue, make_message_bright_green, DEFAULT_PARTY_CONF},
 };
 
 /// Implementation of `party info`
 pub fn info(info_args: InfoArgs) -> anyhow::Result<()> {
-    let file_path = info_args.file;
-    let commands = if Path::new(&file_path).exists() {
+    // Check if file exists only if provided via -f
+    if let Some(file_path) = &info_args.file {
+        check_file_path(file_path)?;
+    }
+
+    let file_path = info_args.file.unwrap_or(DEFAULT_PARTY_CONF.to_string());
+    let commands;
+    let config_exists;
+
+    if Path::new(&file_path).exists() {
         let parser = CommandParser {
             path: file_path.to_string(),
         };
         let tasks = parser.parse()?;
-        party_command::convert_toml_tasks(tasks.tasks)
+        commands = party_command::convert_toml_tasks(tasks.tasks);
+        config_exists = true;
     } else {
-        make_default_commands()
+        commands = make_default_commands();
+        config_exists = false;
     };
     let no_commands = commands.len();
 
-    println!("Configuration has a total of {} tasks:", no_commands);
+    if config_exists {
+        println!("{} has a total of {} tasks.", file_path, no_commands);
+    } else {
+        println!(
+            "Default configuration has a total of {} tasks.",
+            no_commands
+        );
+    }
+    println!(
+        "Tasks marked with {} are run in parallel:\n",
+        make_message_bright_green("[P]")
+    );
+
     for (i, command) in commands.iter().enumerate() {
         let prefix = if command.is_parallel { "[P]" } else { "[ ]" };
 

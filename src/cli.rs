@@ -28,14 +28,14 @@ pub enum CliCommands {
 #[derive(Args)]
 pub struct RunArgs {
     /// Party configuration file. If missing, default tasks are used
-    #[arg(short, long, default_value = "./party.toml")]
-    pub file: String,
+    #[arg(short, long)]
+    pub file: Option<String>,
 }
 
 /// Arguments for cargo party info
 #[derive(Args)]
 pub struct InfoArgs {
     /// Party configuration file to describe. If missing, default tasks are used
-    #[arg(short, long, default_value = "./party.toml")]
-    pub file: String,
+    #[arg(short, long)]
+    pub file: Option<String>,
 }
