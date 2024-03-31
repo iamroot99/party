@@ -16,6 +16,12 @@ pub struct CliArgs {
 pub enum CliCommands {
     /// Run cargo party
     Run(RunArgs),
+
+    /// Display configuration information
+    Info(InfoArgs),
+
+    /// Display scheduled batches information
+    Batch
 }
 
 /// Arguments for cargo party run
@@ -25,3 +31,13 @@ pub struct RunArgs {
     #[arg(short, long, default_value = "./party.toml")]
     pub file: String,
 }
+
+/// Arguments for cargo party info
+#[derive(Args)]
+pub struct InfoArgs {
+    /// Party configuration file to describe. If missing, default tasks are used
+    #[arg(short, long, default_value = "./party.toml")]
+    pub file: String,
+}
+
+
