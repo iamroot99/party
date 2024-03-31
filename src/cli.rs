@@ -30,6 +30,10 @@ pub struct RunArgs {
     /// Party configuration file. If missing, default tasks are used
     #[arg(short, long)]
     pub file: Option<String>,
+
+    /// Index of task to run from the configuration file
+    #[arg(short, long)]
+    pub index: Option<usize>,
 }
 
 /// Arguments for cargo party info

@@ -1,10 +1,12 @@
 //! `party run`
 use std::path::Path;
 
+use anyhow::bail;
+
 use crate::{
     cli::RunArgs,
     parser::command_parser::CommandParser,
-    party_command::{self, make_default_commands},
+    party_command::{self, make_default_commands, PartyCommand},
     runner, schdeuler,
     util::{check_file_path, DEFAULT_PARTY_CONF},
 };
@@ -27,11 +29,37 @@ pub async fn run(run_args: RunArgs) -> anyhow::Result<()> {
     } else {
         make_default_commands()
     };
+
+    match run_args.index {
+        Some(index) => run_single_task(commands, index),
+        None => run_all(commands).await,
+    }
+}
+
+fn run_single_task(commands: Vec<PartyCommand>, index: usize) -> anyhow::Result<()> {
+    println!("Staring cargo party 🏇🏇🏇");
+
+    let Some(command) = commands.get(index - 1) else {
+        bail!(
+            "Index {} out of range. Only {} tasks are available",
+            index,
+            commands.len()
+        )
+    };
+
+    println!("Running a single task: {}", command);
+    runner::run_single_command(command)?;
+    println!("✅ Cargo party complete! ✅");
+
+    Ok(())
+}
+
+async fn run_all(commands: Vec<PartyCommand>) -> anyhow::Result<()> {
+    println!("Staring cargo party 🏇🏇🏇");
+
     let no_commands = commands.len();
 
     let batches = schdeuler::schedule_commands(commands);
-
-    println!("Staring cargo party 🏇🏇🏇");
 
     if batches.len() == no_commands {
         runner::run_sync_commands(batches, no_commands)?;

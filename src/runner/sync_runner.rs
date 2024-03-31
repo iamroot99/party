@@ -1,5 +1,6 @@
 //! Single-threaded runner.
 use crate::{
+    party_command::PartyCommand,
     runner::{command_handler::handle_single_command, run_report::RunReport},
     schdeuler::CommandBatch,
     util::make_counter_blue,
@@ -30,5 +31,15 @@ pub fn run_sync_commands(batches: Vec<CommandBatch>, no_commands: usize) -> anyh
 
     print_status_report(failed, no_commands, reports);
 
+    Ok(())
+}
+
+/// Run a single command
+pub fn run_single_command(command: &PartyCommand) -> anyhow::Result<()> {
+    let report = handle_single_command(make_counter_blue(1, 1), command)?;
+
+    let failed = if !report.success { 1 } else { 0 };
+
+    print_status_report(failed, 1, vec![report]);
     Ok(())
 }
