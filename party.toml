@@ -1,6 +1,5 @@
 [[tasks]]
 command = ["cargo", "fmt"]
-parallel = false
 
 [[tasks]]
 command = ["sleep", "5"]
@@ -12,4 +11,8 @@ parallel = true
 
 [[tasks]]
 command = ["cargo", "test"]
+parallel = true
+
+[[tasks]]
+command = ["sleep", "5"]
 parallel = true

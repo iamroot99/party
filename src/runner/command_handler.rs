@@ -16,26 +16,27 @@ pub fn handle_single_command(
     let mut command: std::process::Child = Command::new(raw_cmd.command.clone())
         .args(raw_cmd.args.clone())
         .spawn()
-        .context(format!("Failed to start command: \"{}\"", raw_cmd))?;
+        .context(format!("Failed to start task: \"{}\"", raw_cmd))?;
 
     let output = command
         .wait()
-        .context(format!("Command failed: \"{}\"", raw_cmd))?;
+        .context(format!("Task failed: \"{}\"", raw_cmd))?;
 
     if !output.success() {
         match output.code() {
             Some(code) => {
-                let err_msg = make_message_bright_red(&format!(" returned with code {}!", code));
+                let err_msg = make_message_bright_red(&format!(" returned with code {}", code));
                 let full_err_msg = format!("❌ {} {} {}", counter_str, raw_cmd, err_msg);
                 eprintln!("{}", full_err_msg);
 
                 return Ok(RunReport::new_failed(full_err_msg));
             }
-            None => bail!("Command \"{}\" terminated with a signal", raw_cmd),
+            None => bail!("Task \"{}\" terminated with a signal", raw_cmd),
         }
     }
 
     let message = format!("✅ {} {}", counter_str, raw_cmd);
     println!("{}", message);
+
     Ok(RunReport::new_success(message))
 }

@@ -33,15 +33,19 @@ pub fn info(info_args: InfoArgs) -> anyhow::Result<()> {
     let no_commands = commands.len();
 
     if config_exists {
-        println!("{} has a total of {} tasks.", file_path, no_commands);
+        print!(
+            "{} has a total of {} tasks.",
+            make_message_bright_green(&file_path),
+            no_commands
+        );
     } else {
-        println!(
+        print!(
             "Default configuration has a total of {} tasks.",
             no_commands
         );
     }
     println!(
-        "Tasks marked with {} are run in parallel:\n",
+        " Tasks marked with {} are run in parallel:\n",
         make_message_bright_green("[P]")
     );
 
