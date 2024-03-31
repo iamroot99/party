@@ -21,7 +21,7 @@ pub enum CliCommands {
     Info(InfoArgs),
 
     /// Display scheduled batches information
-    Batch,
+    Batch(BatchArgs),
 }
 
 /// Arguments for cargo party run
@@ -35,6 +35,14 @@ pub struct RunArgs {
 /// Arguments for cargo party info
 #[derive(Args)]
 pub struct InfoArgs {
+    /// Party configuration file to describe. If missing, default tasks are used
+    #[arg(short, long)]
+    pub file: Option<String>,
+}
+
+/// Arguments for cargo party batch
+#[derive(Args)]
+pub struct BatchArgs {
     /// Party configuration file to describe. If missing, default tasks are used
     #[arg(short, long)]
     pub file: Option<String>,

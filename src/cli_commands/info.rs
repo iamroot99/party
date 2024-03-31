@@ -51,7 +51,7 @@ pub fn info(info_args: InfoArgs) -> anyhow::Result<()> {
         println!(
             "{}{}: {}",
             make_message_bright_green(prefix),
-            make_counter_blue(i, no_commands),
+            make_counter_blue(i + 1, no_commands),
             command
         );
     }
