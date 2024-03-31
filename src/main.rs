@@ -1,25 +1,23 @@
 use std::path::Path;
 
 use cargo_party::{
+    cli::{CliArgs, CliCommands, RunArgs},
     parser::command_parser::CommandParser,
     party_command::{self, make_default_commands},
     runner, schdeuler,
 };
-use clap::{command, Parser};
-
-/// Simple local development automator
-#[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
-struct CliArgs {
-    /// Party configuration file. If missing, default tasks are used
-    #[arg(short, long, default_value = "./party.toml")]
-    file: String,
-}
+use clap::Parser;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let args = CliArgs::parse();
-    let file_path = args.file;
+    let cli = CliArgs::parse();
+    match cli.command {
+        CliCommands::Run(run_args) => run(run_args).await,
+    }
+}
+
+async fn run(run_args: RunArgs) -> anyhow::Result<()> {
+    let file_path = run_args.file;
 
     let commands = if Path::new(&file_path).exists() {
         let parser = CommandParser {
