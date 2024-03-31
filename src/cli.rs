@@ -21,7 +21,7 @@ pub enum CliCommands {
     Info(InfoArgs),
 
     /// Display scheduled batches information
-    Batch
+    Batch,
 }
 
 /// Arguments for cargo party run
@@ -39,5 +39,3 @@ pub struct InfoArgs {
     #[arg(short, long, default_value = "./party.toml")]
     pub file: String,
 }
-
-

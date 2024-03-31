@@ -2,14 +2,11 @@
 use anyhow::Context;
 
 use crate::{
-    runner::{
-        command_handler::handle_single_command, output_util::make_counter_blue,
-        run_report::RunReport,
-    },
-    schdeuler::CommandBatch,
+    runner::command_handler::handle_single_command, schdeuler::CommandBatch,
+    util::make_counter_blue,
 };
 
-use super::output_util::print_status_report;
+use super::run_report::{print_status_report, RunReport};
 
 /// Main driver function running all the party commands in batches asynchronously.
 pub async fn run_async_commands(

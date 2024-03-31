@@ -1,13 +1,11 @@
 //! Single-threaded runner.
 use crate::{
-    runner::{
-        command_handler::handle_single_command, output_util::make_counter_blue,
-        run_report::RunReport,
-    },
+    runner::{command_handler::handle_single_command, run_report::RunReport},
     schdeuler::CommandBatch,
+    util::make_counter_blue,
 };
 
-use super::output_util::print_status_report;
+use super::run_report::print_status_report;
 
 /// Main driver function running all the party commands synchronously.
 pub fn run_sync_commands(batches: Vec<CommandBatch>, no_commands: usize) -> anyhow::Result<()> {

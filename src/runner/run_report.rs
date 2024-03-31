@@ -18,3 +18,20 @@ impl RunReport {
         }
     }
 }
+
+/// Display the status report for the current run
+pub fn print_status_report(failed: usize, total: usize, reports: Vec<RunReport>) {
+    if failed != 0 {
+        println!("\ncargo party report - {}/{} failed tasks:", failed, total);
+    } else {
+        println!("\ncargo party report - all tasks passed:");
+    }
+    for report in reports {
+        if report.success {
+            println!("{}", report.message);
+        } else {
+            eprintln!("{}", report.message);
+        }
+    }
+    println!();
+}

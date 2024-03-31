@@ -1,7 +1,6 @@
 //! Main command runner
 mod async_runner;
 mod command_handler;
-mod output_util;
 mod run_report;
 mod sync_runner;
 
