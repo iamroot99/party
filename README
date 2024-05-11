@@ -5,5 +5,44 @@
 
 It is designed to run a set of default or user-defined commands either sequentially or in parallel.
 
-### How To Use
+### How To Run
 
+#### 1a. Run with default commands
+
+```bash
+party run
+```
+
+By default `party run` will run sequentially the commands:
+  1. `cargo fmt`
+  2. `cargo clippy -- -Dwarnings`
+  3. `cargo test`
+
+#### 1b. Initalise local configuration file
+
+```bash
+party init
+```
+
+This generates a local `party.toml`:
+
+```toml
+[[tasks]]
+command = ["cargo", "fmt"]
+
+[[tasks]]
+command = ["cargo", "clippy", "--", "-Dwarnings"]
+
+[[tasks]]
+command = ["cargo", "test"]
+```
+
+#### 2. Update the configuration file
+
+To verify that the configuration file is correct, run `party info` to view the commands that are about to be ran and `party batch` to verify how the commands are batched for asynchrounous running
+
+#### 3. party run
+
+When ready, run `party run` to execute the commands in the configuration file.
+
+For more information, run `party help`.
