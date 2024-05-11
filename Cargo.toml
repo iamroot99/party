@@ -1,12 +1,12 @@
 [package]
+name = "party"
 authors = ["iamroot99"]
 description = "A command execution automator"
 edition = "2021"
 license = "MIT OR Apache-2.0"
-name = "party-run"
 repository = "https://github.com/iamroot99/party-run"
 readme = "README"
-version = "0.1.0"
+version = "0.1.1"
 keywords = ["cli", "automation", "development", "helper"]
 categories = ["command-line-utilities", "development-tools"]
 

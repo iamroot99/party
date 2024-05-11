@@ -306,8 +306,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "party-run"
-version = "0.1.0"
+name = "party"
+version = "0.1.1"
 dependencies = [
  "anyhow",
  "clap",

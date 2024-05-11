@@ -1,5 +1,5 @@
 use clap::Parser;
-use party_run::{
+use party::{
     cli::{CliArgs, CliCommands},
     cli_commands,
 };
