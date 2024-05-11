@@ -1,4 +1,4 @@
-//! Cargo party
+//! party-run
 #![warn(missing_docs)]
 
 pub mod cli;

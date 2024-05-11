@@ -14,7 +14,7 @@ pub struct CliArgs {
 /// Possible client commands
 #[derive(Subcommand)]
 pub enum CliCommands {
-    /// Run cargo party
+    /// party run
     Run(RunArgs),
 
     /// Display configuration information
@@ -24,7 +24,7 @@ pub enum CliCommands {
     Batch(BatchArgs),
 }
 
-/// Arguments for cargo party run
+/// Arguments for party run
 #[derive(Args)]
 pub struct RunArgs {
     /// Party configuration file. If missing, default tasks are used
@@ -36,7 +36,7 @@ pub struct RunArgs {
     pub index: Option<usize>,
 }
 
-/// Arguments for cargo party info
+/// Arguments for party info
 #[derive(Args)]
 pub struct InfoArgs {
     /// Party configuration file to describe. If missing, default tasks are used
@@ -44,7 +44,7 @@ pub struct InfoArgs {
     pub file: Option<String>,
 }
 
-/// Arguments for cargo party batch
+/// Arguments for party batch
 #[derive(Args)]
 pub struct BatchArgs {
     /// Party configuration file to describe. If missing, default tasks are used

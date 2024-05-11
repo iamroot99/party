@@ -1,4 +1,4 @@
-//! Core cargo party command.
+//! Core party command.
 use core::fmt;
 
 use crate::parser::toml_command::Task;
@@ -58,7 +58,7 @@ impl fmt::Display for PartyCommand {
 }
 
 /// Create the default party commands.
-/// By default cargo party runs the following commands sequentially:
+/// By default party-run runs the following commands sequentially:
 /// - cargo fmt
 /// - cargo clippy -- -Dwarnings
 /// - cargo test

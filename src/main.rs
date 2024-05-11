@@ -1,8 +1,8 @@
-use cargo_party::{
+use clap::Parser;
+use party_run::{
     cli::{CliArgs, CliCommands},
     cli_commands,
 };
-use clap::Parser;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {

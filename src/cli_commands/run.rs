@@ -37,7 +37,7 @@ pub async fn run(run_args: RunArgs) -> anyhow::Result<()> {
 }
 
 fn run_single_task(commands: Vec<PartyCommand>, index: usize) -> anyhow::Result<()> {
-    println!("Staring cargo party 🏇🏇🏇");
+    println!("Staring party run 🏇🏇🏇");
 
     let Some(command) = commands.get(index - 1) else {
         bail!(
@@ -49,13 +49,13 @@ fn run_single_task(commands: Vec<PartyCommand>, index: usize) -> anyhow::Result<
 
     println!("Running a single task: {}", command);
     runner::run_single_command(command)?;
-    println!("✅ Cargo party complete! ✅");
+    println!("✅ Party run complete! ✅");
 
     Ok(())
 }
 
 async fn run_all(commands: Vec<PartyCommand>) -> anyhow::Result<()> {
-    println!("Staring cargo party 🏇🏇🏇");
+    println!("Staring party run 🏇🏇🏇");
 
     let no_commands = commands.len();
 
@@ -67,7 +67,7 @@ async fn run_all(commands: Vec<PartyCommand>) -> anyhow::Result<()> {
         runner::run_async_commands(batches, no_commands).await?;
     }
 
-    println!("✅ Cargo party complete! ✅");
+    println!("✅ Party run complete! ✅");
 
     Ok(())
 }
