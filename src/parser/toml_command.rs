@@ -1,8 +1,10 @@
 //! Structs used by the parser to parse the TOML components.
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
+
+use crate::party_command::PartyCommand;
 
 /// Single TOML task
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Task {
     /// Command components
     pub command: Vec<String>,
@@ -12,10 +14,22 @@ pub struct Task {
 }
 
 /// Top-level struct holding all TOML tasks
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Tasks {
     /// Parsed tasks
     pub tasks: Vec<Task>,
+}
+
+impl From<PartyCommand> for Task {
+    fn from(mut value: PartyCommand) -> Self {
+        let mut command = vec![value.command];
+        command.append(&mut value.args);
+
+        // Set to None if the task is not parallel
+        let parallel = value.is_parallel.then_some(true);
+
+        Self { command, parallel }
+    }
 }
 
 #[cfg(test)]

@@ -17,6 +17,9 @@ pub enum CliCommands {
     /// party run
     Run(RunArgs),
 
+    /// Initialise local party configuration file
+    Init(InitArgs),
+
     /// Display configuration information
     Info(InfoArgs),
 
@@ -48,6 +51,14 @@ pub struct InfoArgs {
 #[derive(Args)]
 pub struct BatchArgs {
     /// Party configuration file to describe. If missing, default tasks are used
+    #[arg(short, long)]
+    pub file: Option<String>,
+}
+
+/// Arguments for party init
+#[derive(Args)]
+pub struct InitArgs {
+    /// Party configuration file to write to during initialisation
     #[arg(short, long)]
     pub file: Option<String>,
 }
