@@ -8,7 +8,7 @@ use crate::{
     cli::InitArgs,
     parser::toml_command::{Task, Tasks},
     party_command::make_default_commands,
-    util::DEFAULT_PARTY_CONF,
+    util::{CHECK, DEFAULT_PARTY_CONF},
 };
 
 /// Implementation of `party init
@@ -27,5 +27,9 @@ pub fn init(init_args: InitArgs) -> anyhow::Result<()> {
     let mut file = File::create(file_path).context("Failed to created configuration file")?;
     file.write_all(tasks_str.as_bytes())?;
 
+    println!(
+        "{} Initialisation complete. Check \"party.toml\". {}",
+        CHECK, CHECK
+    );
     Ok(())
 }

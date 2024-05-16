@@ -34,3 +34,18 @@ pub fn make_message_bright_green(message: &str) -> ColoredString {
 pub fn make_message_bright_red(message: &str) -> ColoredString {
     message.bright_red()
 }
+
+/// Hourglass unicode
+pub const HOURGLASS: char = '\u{23F3}';
+
+/// Cross unicode
+pub const CROSS: char = '\u{274C}';
+
+/// Check unicode
+pub const CHECK: char = '\u{2705}';
+
+/// Horse unicode
+pub const HORSE: char = '\u{1F3C7}';
+
+/// Party popper unicode
+pub const POPPER: char = '\u{1F389}';

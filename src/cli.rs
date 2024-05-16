@@ -14,11 +14,11 @@ pub struct CliArgs {
 /// Possible client commands
 #[derive(Subcommand)]
 pub enum CliCommands {
-    /// party run
-    Run(RunArgs),
-
     /// Initialise local party configuration file
     Init(InitArgs),
+
+    /// party run
+    Run(RunArgs),
 
     /// Display configuration information
     Info(InfoArgs),
