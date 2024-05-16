@@ -58,7 +58,7 @@ impl fmt::Display for PartyCommand {
 }
 
 /// Create the default party commands.
-/// By default party-run runs the following commands sequentially:
+/// By default party runs the following commands sequentially:
 /// - cargo fmt
 /// - cargo clippy -- -Dwarnings
 /// - cargo test

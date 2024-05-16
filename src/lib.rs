@@ -1,4 +1,4 @@
-//! party-run
+//! party
 #![warn(missing_docs)]
 
 pub mod cli;

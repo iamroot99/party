@@ -1,6 +1,6 @@
 # party - Run a Party of Commands
 
-**party-run** is a minimal command runner that aims to automate running a repetitive sequence of commands (usually during development).
+**party** is a minimal command runner that aims to automate running a repetitive sequence of commands (usually during development).
 
 It is designed to run a set of default or user-defined commands either sequentially or in parallel.
 
