@@ -44,6 +44,12 @@ command = "cargo clippy -- -Dwarnings"
 command = "cargo test"
 ```
 
+> [!IMPORTANT]  
+> If using party <= 0.1.4 the syntax for the command is
+> ```toml
+> command = ["command", "arg1", "arg2", "arg3"]
+> ``` 
+
 Once the file is ready, invoking `party run` will run your custom party of commands!
 To run a single party command, use `party run -i [COMMAND_NUMBER]`.
 
