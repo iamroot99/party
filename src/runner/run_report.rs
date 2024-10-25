@@ -1,3 +1,5 @@
+//! Report for a command run
+
 pub struct RunReport {
     pub message: String,
     pub success: bool,

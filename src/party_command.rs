@@ -9,37 +9,29 @@ pub struct PartyCommand {
     /// Command to run
     pub command: String,
 
-    /// Command arguments
-    pub args: Vec<String>,
-
     /// Signals if command can be paralelised
     pub is_parallel: bool,
 }
 
 impl PartyCommand {
     /// Create a new PartyCommand
-    pub fn new(command: String, args: Vec<String>, is_parallel: bool) -> Self {
+    pub fn new(command: String, is_parallel: bool) -> Self {
         Self {
             command,
-            args,
             is_parallel,
         }
     }
 }
 
 impl From<Task> for PartyCommand {
-    fn from(mut task: Task) -> Self {
+    fn from(task: Task) -> Self {
         assert!(!task.command.is_empty());
-
-        let command = task.command.remove(0);
-        let args = task.command;
 
         // A task is not parallel by default
         let is_parallel = task.parallel.unwrap_or(false);
 
         Self {
-            command,
-            args,
+            command: task.command,
             is_parallel,
         }
     }
@@ -47,13 +39,7 @@ impl From<Task> for PartyCommand {
 
 impl fmt::Display for PartyCommand {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut out = self.command.clone();
-        for arg in &self.args {
-            out += " ";
-            out += arg;
-        }
-
-        write!(f, "{}", out)
+        write!(f, "{}", self.command)
     }
 }
 
@@ -63,15 +49,11 @@ impl fmt::Display for PartyCommand {
 /// - cargo clippy -- -Dwarnings
 /// - cargo test
 pub fn make_default_commands() -> Vec<PartyCommand> {
-    let cargo_fmt = PartyCommand::new("cargo".into(), vec!["fmt".into()], false);
+    let cargo_fmt = PartyCommand::new("cargo fmt".to_string(), false);
 
-    let cargo_clippy = PartyCommand::new(
-        "cargo".into(),
-        vec!["clippy".into(), "--".into(), "-Dwarnings".into()],
-        false,
-    );
+    let cargo_clippy = PartyCommand::new("cargo clippy -- -Dwarnings".to_string(), false);
 
-    let cargo_test = PartyCommand::new("cargo".into(), vec!["test".into()], false);
+    let cargo_test = PartyCommand::new("cargo test".to_string(), false);
 
     vec![cargo_fmt, cargo_clippy, cargo_test]
 }
@@ -88,11 +70,7 @@ mod test {
     #[test]
     fn test_display() {
         // GIVEN
-        let cmd = PartyCommand::new(
-            "cargo".into(),
-            vec!["clippy".into(), "--".into(), "-Dwarnings".into()],
-            false,
-        );
+        let cmd = PartyCommand::new("cargo clippy -- -Dwarnings".to_string(), false);
 
         // WHEN
         let cmd_string = format!("{}", cmd);

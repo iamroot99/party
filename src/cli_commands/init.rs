@@ -11,7 +11,7 @@ use crate::{
     util::{CHECK, DEFAULT_PARTY_CONF},
 };
 
-/// Implementation of `party init
+/// Implementation of `party init`
 pub fn init(init_args: InitArgs) -> anyhow::Result<()> {
     let commands = make_default_commands();
 
