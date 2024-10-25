@@ -35,13 +35,13 @@ This generates a local `party.toml`:
 
 ```toml
 [[tasks]]
-command = ["cargo", "fmt"]
+command = "cargo fmt"
 
 [[tasks]]
-command = ["cargo", "clippy", "--", "-Dwarnings"]
+command = "cargo clippy -- -Dwarnings"
 
 [[tasks]]
-command = ["cargo", "test"]
+command = "cargo test"
 ```
 
 Once the file is ready, invoking `party run` will run your custom party of commands!
@@ -62,18 +62,18 @@ In the example below, the second and third command are independent and have the 
 
 ```toml
 [[tasks]]
-command = ["cargo", "fmt"]
+command = "cargo fmt"
 
 [[tasks]]
-command = ["cargo", "clippy", "--", "-Dwarnings"]
+command = "cargo clippy -- -Dwarnings"
 parallel = true
 
 [[tasks]]
-command = ["cargo", "test"]
+command = "cargo test"
 parallel = true
 
 [[tasks]]
-command = ["cat", "results.txt"]
+command = "cat results.txt"
 ```
 
 The commands that are paralelised in the configuration have a `[P]` tag in `party info`:
