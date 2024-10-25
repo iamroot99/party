@@ -10,6 +10,7 @@ use crate::{
 
 use super::run_report::RunReport;
 
+/// Runs a single command
 pub fn handle_single_command(
     counter_str: ColoredString,
     party_cmd: &PartyCommand,
