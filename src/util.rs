@@ -8,7 +8,8 @@ use colored::Colorize;
 /// Default party configuration file to read from if available
 pub const DEFAULT_PARTY_CONF: &str = "./party.toml";
 
-/// Type alias for an option of a String -> String HashMap
+/// Type alias for an option of a String -> String HashMap 
+/// for environment variables to be used with a comand
 pub type OptionEnv = Option<HashMap<String, String>>;
 
 /// Check if the given file exists

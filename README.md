@@ -110,3 +110,30 @@ Batch [3/3] with 1 commands:
 ```
 
 For more information, run `party help`, or `party [COMMAND] --help`.
+
+### Environment Variables
+
+> This feature is available in **party 0.3.0** and above.
+
+Commands ran by party implicitly keep the environment in which they are ran. You can also specify
+additional environment variables for each command:
+
+```toml
+[[tasks]]
+command = "cargo fmt"
+
+[[tasks]]
+env = { RUST_BACKTRACE = "1" }
+command = "cargo test"
+parallel = true
+
+[[tasks]]
+env = { LOG = "debug", VALUE = "test" }
+command = "cat results.txt"
+```
+
+In the example configuration above, the first command runs without any additional environment variables.
+The second command runs with `RUST_BACKTRACE = 1` and the third with `LOG = debug` and `VALUE = test`.
+
+The value of each environment variable must be specified as a string.
+
