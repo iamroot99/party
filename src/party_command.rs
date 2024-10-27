@@ -1,13 +1,17 @@
 //! Core party command.
 use core::fmt;
 
-use crate::parser::toml_command::Task;
+use crate::{parser::toml_command::Task, util::OptionEnv};
 
 /// Struct holding a structured PartyCommand containing a command,
-/// its arguments as an array and wether it can be parallelised.
+/// wether it can be parallelised and any environment variables it requires.
+#[derive(Debug)]
 pub struct PartyCommand {
     /// Command to run
     pub command: String,
+
+    /// Environment variables for the current comand
+    pub env: OptionEnv,
 
     /// Signals if command can be paralelised
     pub is_parallel: bool,
@@ -15,10 +19,11 @@ pub struct PartyCommand {
 
 impl PartyCommand {
     /// Create a new PartyCommand
-    pub fn new(command: String, is_parallel: bool) -> Self {
+    pub fn new(command: String, is_parallel: bool, env: OptionEnv) -> Self {
         Self {
             command,
             is_parallel,
+            env,
         }
     }
 }
@@ -32,6 +37,7 @@ impl From<Task> for PartyCommand {
 
         Self {
             command: task.command,
+            env: task.env,
             is_parallel,
         }
     }
@@ -49,11 +55,11 @@ impl fmt::Display for PartyCommand {
 /// - cargo clippy -- -Dwarnings
 /// - cargo test
 pub fn make_default_commands() -> Vec<PartyCommand> {
-    let cargo_fmt = PartyCommand::new("cargo fmt".to_string(), false);
+    let cargo_fmt = PartyCommand::new("cargo fmt".to_string(), false, None);
 
-    let cargo_clippy = PartyCommand::new("cargo clippy -- -Dwarnings".to_string(), false);
+    let cargo_clippy = PartyCommand::new("cargo clippy -- -Dwarnings".to_string(), false, None);
 
-    let cargo_test = PartyCommand::new("cargo test".to_string(), false);
+    let cargo_test = PartyCommand::new("cargo test".to_string(), false, None);
 
     vec![cargo_fmt, cargo_clippy, cargo_test]
 }
@@ -70,7 +76,7 @@ mod test {
     #[test]
     fn test_display() {
         // GIVEN
-        let cmd = PartyCommand::new("cargo clippy -- -Dwarnings".to_string(), false);
+        let cmd = PartyCommand::new("cargo clippy -- -Dwarnings".to_string(), false, None);
 
         // WHEN
         let cmd_string = format!("{}", cmd);

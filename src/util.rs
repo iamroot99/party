@@ -1,4 +1,5 @@
 //! Helper functions for priniting information.
+use std::collections::HashMap;
 use std::path::Path;
 
 use colored::ColoredString;
@@ -6,6 +7,10 @@ use colored::Colorize;
 
 /// Default party configuration file to read from if available
 pub const DEFAULT_PARTY_CONF: &str = "./party.toml";
+
+/// Type alias for an option of a String -> String HashMap 
+/// for environment variables to be used with a comand
+pub type OptionEnv = Option<HashMap<String, String>>;
 
 /// Check if the given file exists
 pub fn check_file_path(file_path: &str) -> anyhow::Result<()> {
