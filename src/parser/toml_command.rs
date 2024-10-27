@@ -1,7 +1,8 @@
 //! Structs used by the parser to parse the TOML components.
+
 use serde::{Deserialize, Serialize};
 
-use crate::party_command::PartyCommand;
+use crate::{party_command::PartyCommand, util::OptionEnv};
 
 /// Single TOML task
 #[derive(Serialize, Deserialize, Debug)]
@@ -11,6 +12,9 @@ pub struct Task {
 
     /// Signals if command can be paralelised
     pub parallel: Option<bool>,
+
+    /// Option of a map of environment vairables
+    pub env: OptionEnv,
 }
 
 /// Top-level struct holding all TOML tasks
@@ -27,6 +31,7 @@ impl From<PartyCommand> for Task {
 
         Self {
             command: value.command,
+            env: value.env,
             parallel,
         }
     }

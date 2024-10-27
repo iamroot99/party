@@ -45,11 +45,11 @@ pub mod test {
     use super::schedule_commands;
 
     fn parallel_command() -> PartyCommand {
-        PartyCommand::new("".to_string(), true)
+        PartyCommand::new("".to_string(), true, None)
     }
 
     fn sequential_command() -> PartyCommand {
-        PartyCommand::new("".to_string(), false)
+        PartyCommand::new("".to_string(), false, None)
     }
 
     #[test]

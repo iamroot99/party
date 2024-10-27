@@ -17,13 +17,18 @@ pub fn handle_single_command(
 ) -> anyhow::Result<RunReport> {
     println!("{} {} {}", HOURGLASS, counter_str, party_cmd);
 
-    let mut command: std::process::Child = Command::new("sh")
-        .arg("-c")
-        .arg(&party_cmd.command)
+    let mut command = Command::new("sh");
+    command.arg("-c").arg(&party_cmd.command);
+
+    if let Some(env_vars) = &party_cmd.env {
+        command.envs(env_vars);
+    }
+
+    let mut process = command
         .spawn()
         .context(format!("Failed to start task: \"{}\"", party_cmd))?;
 
-    let output = command
+    let output = process
         .wait()
         .context(format!("Task failed: \"{}\"", party_cmd))?;
 

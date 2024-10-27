@@ -2,17 +2,11 @@
 command = "cargo fmt"
 
 [[tasks]]
-command = "sleep 5"
-parallel = true
-
-[[tasks]]
 command = "cargo clippy -- -Dwarnings"
-parallel = true
 
 [[tasks]]
 command = "cargo test"
-parallel = true
 
 [[tasks]]
-command = "sleep 5"
-parallel = true
+env = { Y = "a", X = "2" }
+command = "bash test.sh"
