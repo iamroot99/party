@@ -6,8 +6,8 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/iamroot99/party"
 readme = "README.md"
-version = "0.3.0"
-keywords = ["cli", "automation", "development", "helper", "command-line", "runner"]
+version = "0.3.1"
+keywords = ["cli", "automation", "development", "command-line", "runner"]
 categories = ["command-line-utilities", "development-tools"]
 exclude = [
   "examples",
