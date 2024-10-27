@@ -11,4 +11,4 @@ command = "cargo test"
 
 [[tasks]]
 env = { Y = "a", X = "2" }
-command = "bash test.sh"
+command = "bash ./examples/test.sh"
