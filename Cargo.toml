@@ -9,6 +9,10 @@ readme = "README.md"
 version = "0.3.0"
 keywords = ["cli", "automation", "development", "helper"]
 categories = ["command-line-utilities", "development-tools"]
+exclude = [
+  "examples",
+  "party.toml"
+]
 
 [dependencies]
 anyhow = "1"
