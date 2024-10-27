@@ -2,4 +2,4 @@
 
 echo "Running with '$X', '$Y' and '$Z'"
 
-exit 1
+exit 0

@@ -3,8 +3,10 @@ command = "cargo fmt"
 
 [[tasks]]
 command = "cargo clippy -- -Dwarnings"
+env = {}
 
 [[tasks]]
+env = { RUST_BACKTRACE = "1" }
 command = "cargo test"
 
 [[tasks]]
